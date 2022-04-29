@@ -1,0 +1,59 @@
+package org.prgms.shoppingbasket.domain.order.entity;
+
+import static com.google.common.base.Preconditions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
+
+public class Order {
+	/* 주문 식별번호 */
+	private final UUID orderId;
+	/* 바우처 식별번호 */
+	private UUID voucherId;
+	/* 고객 이메일 */
+	private String email;
+	/* 고객 주소 */
+	private String address;
+	/* 고객 지번 번호 */
+	private String postcode;
+	/* 주문 상품 리스트 */
+	private final List<OrderItem> orderItems;
+	/* 주문 총 가격 */
+	private int totalPrice;
+	/* 주문 생성 시간 */
+	private final LocalDateTime createdAt;
+	/* 주문 마지만 update 시간 */
+	private LocalDateTime updatedAt;
+
+	public Order(UUID orderId, UUID voucherId, String email, String address, String postcode,
+		List<OrderItem> orderItems, int totalPrice) {
+		checkNotNull(orderId, "orderId는 null이면 안됩니다.");
+		checkNotNull(voucherId, "voucherId는 null이면 안됩니다.");
+		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
+		checkNotNull(address, "address 는 공백이면 안됩니다");
+		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
+		checkArgument(!orderItems.isEmpty(), "item을 하나라도 선택해야 합니다.");
+		checkArgument(totalPrice > 0, "총 금액은 0원을 초과해야 합니다.");
+
+		this.orderId = orderId;
+		this.voucherId = voucherId;
+		this.email = email;
+		this.address = address;
+		this.postcode = postcode;
+		this.orderItems = orderItems;
+		this.totalPrice = totalPrice;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	public Order(UUID voucherId, String email, String address, String postcode,
+		List<OrderItem> orderItems, int totalPrice) {
+		this(UUID.randomUUID(), voucherId, email, address, postcode, orderItems, totalPrice);
+	}
+
+	private boolean checkEmail(String email) {
+		return Pattern.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", email);
+	}
+}
