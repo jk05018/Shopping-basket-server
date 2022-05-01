@@ -1,4 +1,4 @@
-package org.prgms.shoppingbasket.domain.order.entity;
+package org.prgms.shoppingbasket.server.shopping.entity;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -6,11 +6,6 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.shoppingbasket.server.shopping.entity.Product;
-import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
-import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
-import org.prgms.shoppingbasket.server.shopping.entity.Order;
-import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
 
 class OrderTest {
 
@@ -19,7 +14,7 @@ class OrderTest {
 	void create_order_test() {
 		// given
 		final VoucherType fixedAmountVoucher = VoucherType.FIXED_AMOUNT_VOUCHER;
-		final Voucher voucher = fixedAmountVoucher.create(1000);
+		final Voucher voucher = fixedAmountVoucher.create(1000, "1000원 할인입니다!");
 		String email = "jk05018@naver.com";
 
 		// when
@@ -45,7 +40,7 @@ class OrderTest {
 
 	@DisplayName("나중에 서비스에서 할때 OrderItem의 주문량이 product의 remain보다 작을 때 예외를 내도록 처리하자 Controller 단에서 처리할 수 있음 더 좋고")
 	@Test
-	void test(){
+	void test() {
 		// given
 
 		//when
@@ -53,7 +48,5 @@ class OrderTest {
 		//then
 
 	}
-
-
 
 }

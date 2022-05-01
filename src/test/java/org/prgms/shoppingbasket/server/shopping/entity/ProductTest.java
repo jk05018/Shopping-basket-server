@@ -1,4 +1,4 @@
-package org.prgms.shoppingbasket.domain.product.entity;
+package org.prgms.shoppingbasket.server.shopping.entity;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.shoppingbasket.server.shopping.entity.Product;
 
 class ProductTest {
 
@@ -42,7 +41,8 @@ class ProductTest {
 	@Test
 	void productName_description_length_test() {
 		assertThrows(IllegalArgumentException.class, () -> new Product("", 10000, 20, "나는 과자다"));
-		assertThrows(IllegalArgumentException.class, () -> new Product("snackkkkkkkkkkkkkkkkkkkkkkkkkk", 10000, 20, "I'm snack"));
+		assertThrows(IllegalArgumentException.class,
+			() -> new Product("snackkkkkkkkkkkkkkkkkkkkkkkkkk", 10000, 20, "I'm snack"));
 		assertThrows(IllegalArgumentException.class, () -> new Product(null, 10000, 20, "나는 과자다"));
 	}
 
