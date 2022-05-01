@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
+import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
 
 class VoucherTest {
 

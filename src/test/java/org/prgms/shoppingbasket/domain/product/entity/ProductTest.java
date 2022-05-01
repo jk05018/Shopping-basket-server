@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgms.shoppingbasket.server.shopping.entity.Product;
 
 class ProductTest {
 

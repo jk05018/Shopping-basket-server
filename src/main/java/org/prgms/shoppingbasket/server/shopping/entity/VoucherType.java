@@ -1,4 +1,4 @@
-package org.prgms.shoppingbasket.domain.voucher.entity;
+package org.prgms.shoppingbasket.server.shopping.entity;
 
 import static com.google.common.base.Preconditions.*;
 

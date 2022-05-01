@@ -1,17 +1,16 @@
 package org.prgms.shoppingbasket.domain.order.entity;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collections;
-import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.shoppingbasket.domain.product.entity.Product;
-import org.prgms.shoppingbasket.domain.voucher.entity.Voucher;
-import org.prgms.shoppingbasket.domain.voucher.entity.VoucherType;
+import org.prgms.shoppingbasket.server.shopping.entity.Product;
+import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
+import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
+import org.prgms.shoppingbasket.server.shopping.entity.Order;
+import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
 
 class OrderTest {
 
