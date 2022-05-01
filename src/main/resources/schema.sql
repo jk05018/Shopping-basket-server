@@ -40,15 +40,9 @@ create table vouchers
 (
     voucher_id BINARY(16) PRIMARY KEY ,
     value int NOT NULL,
-    type BINARY(16) NOT NULL,
+    type VARCHAR(50) NOT NULL,
     description VARCHAR(200) NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) DEFAULT NULL,
-    CONSTRAINT fk_vouchers_to_voucher_type FOREIGN KEY (type) REFERENCES voucher_type (voucher_type_id)
 );
 
-create table voucher_type
-(
-    voucher_type_id BINARY(16) PRIMARY KEY ,
-    name VARCHAR(20) NOT NULL
-);

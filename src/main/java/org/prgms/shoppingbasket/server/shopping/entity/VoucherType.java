@@ -11,32 +11,17 @@ public enum VoucherType {
 	/* 고정 금액 할인 Voucher */
 	FIXED_AMOUNT_VOUCHER {
 		@Override
-		public Voucher create(int value) {
-			checkArgument(0 < value && value <= 1000000, "할인 금액은 0원 이상 100만원 미만이어야 합니다.");
-
-			return new Voucher(UUID.randomUUID(), value, VoucherType.FIXED_AMOUNT_VOUCHER);
+		public Voucher create(int value, String description) {
+			return new Voucher(value, VoucherType.FIXED_AMOUNT_VOUCHER.name(), description);
 		}
 
-		@Override
-		public Voucher create(UUID voucherId, int value) {
-			return new Voucher(voucherId, value, VoucherType.FIXED_AMOUNT_VOUCHER);
-		}
-
-	/* 퍼센트 할인 Voucher */
+		/* 퍼센트 할인 Voucher */
 	}, PERCENT_DISCOUNT_VOUCHER {
 		@Override
-		public Voucher create(int value) {
-			checkArgument(0 < value && value < 100, "할인율은 0% 이상 100% 미만이어야 합니다.");
-
-			return new Voucher(UUID.randomUUID(), value, VoucherType.PERCENT_DISCOUNT_VOUCHER);
-		}
-
-		@Override
-		public Voucher create(UUID voucherId, int value) {
-			return new Voucher(voucherId, value, VoucherType.PERCENT_DISCOUNT_VOUCHER);
+		public Voucher create(int value, String description) {
+			return new Voucher(value, VoucherType.PERCENT_DISCOUNT_VOUCHER.name(), description);
 		}
 	};
 
-	public abstract Voucher create(int value);
-	public abstract Voucher create(UUID voucherId, int value);
+	public abstract Voucher create(int value, String description);
 }

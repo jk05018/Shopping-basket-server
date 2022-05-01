@@ -43,15 +43,4 @@ class VoucherTest {
 			() -> VoucherType.PERCENT_DISCOUNT_VOUCHER.create(101, "101퍼센트 할인?"));
 	}
 
-	@DisplayName("Percent Voucher의 할인율은 1% 이상 100% 이하여야 한다.")
-	@Test
-	void percent_discount_fail_test() {
-		// given, when, then
-		assertThatThrownBy(
-			() -> new Voucher(150, VoucherType.PERCENT_DISCOUNT_VOUCHER.name(), "150% 할인입니다!")).isInstanceOf(
-			IllegalArgumentException.class);
-		assertThatThrownBy(
-			() -> new Voucher(250, VoucherType.PERCENT_DISCOUNT_VOUCHER.name(), "150% 할인입니다!")).isInstanceOf(
-			IllegalArgumentException.class);
-	}
 }
