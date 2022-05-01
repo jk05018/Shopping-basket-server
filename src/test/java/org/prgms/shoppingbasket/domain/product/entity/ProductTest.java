@@ -3,6 +3,7 @@ package org.prgms.shoppingbasket.domain.product.entity;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +24,8 @@ class ProductTest {
 		//given
 		final UUID uuid = UUID.randomUUID();
 		//when
-		final Product new_snack = new Product(uuid, "snack2", 20000, 30, "나는 과자다2");
+		final Product new_snack = new Product(uuid, "snack2", 20000, 30, "나는 과자다2", LocalDateTime.now(),
+			LocalDateTime.now());
 		//then
 		assertThat(new_snack.getProductId()).isEqualTo(uuid);
 	}
@@ -40,10 +42,8 @@ class ProductTest {
 	@Test
 	void productName_description_length_test() {
 		assertThrows(IllegalArgumentException.class, () -> new Product("", 10000, 20, "나는 과자다"));
-		assertThrows(IllegalArgumentException.class, () -> new Product("snack", 10000, 20, ""));
 		assertThrows(IllegalArgumentException.class, () -> new Product("snackkkkkkkkkkkkkkkkkkkkkkkkkk", 10000, 20, "I'm snack"));
 		assertThrows(IllegalArgumentException.class, () -> new Product(null, 10000, 20, "나는 과자다"));
-		assertThrows(IllegalArgumentException.class, () -> new Product("snack", 10000, 20, null));
 	}
 
 }

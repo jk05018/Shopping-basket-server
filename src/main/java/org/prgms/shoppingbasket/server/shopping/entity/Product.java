@@ -5,9 +5,11 @@ import static com.google.common.base.Preconditions.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode
 public class Product {
 	/* 상품 식별 번호 */
 	private final UUID productId;
@@ -17,33 +19,38 @@ public class Product {
 	private int price;
 	/* 상품 잔여 수량 */
 	private int remainQuantity;
-	/* 상품 설명 */
+	/* 상품 설명 NULL 가능 */
 	private String description;
 	/* 상품 생성 시간 */
 	private final LocalDateTime createdAt;
 	/* 상품 마지막 update 시간 */
 	private LocalDateTime updatedAt;
 
-	public Product(UUID productId, String productName, int price, int remainQuantity, String description) {
+	public Product(UUID productId, String productName, int price, int remainQuantity
+		, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		checkNotNull(productId, "productId는 null이면 안됩니다.");
-		checkArgument( productName != null && checkLength(0, 20, productName),
+		checkArgument(productName != null && checkLength(0, 20, productName),
 			"productName은 1자 이상 20자 미만이어야 합니다");
 		checkArgument(price > 0, "product의 가격은 음수이면 안됩니다. price = {}", price);
 		checkArgument(remainQuantity > 0, "product의 재고는 음수이면 안됩니다. remainQuantity = {}", remainQuantity);
-		checkArgument(description != null && checkLength(0, 500, description),
-			"description은 1자 이상 500자 미만이어야 합니다.");
 
 		this.productId = productId;
 		this.productName = productName;
 		this.price = price;
 		this.remainQuantity = remainQuantity;
 		this.description = description;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	public Product(String productName, int price, int remainQuantity, String description) {
-		this(UUID.randomUUID(), productName, price, remainQuantity, description);
+		this(UUID.randomUUID(), productName, price, remainQuantity, description, LocalDateTime.now(),
+			LocalDateTime.now());
+	}
+
+	public Product(String productName, int price, int remainQuantity) {
+		this(UUID.randomUUID(), productName, price, remainQuantity, null, LocalDateTime.now(),
+			LocalDateTime.now());
 	}
 
 	private boolean checkLength(int lower, int upper, String param) {
