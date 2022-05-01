@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import lombok.Getter;
+
+@Getter
 public class Order {
 	/* 주문 식별번호 */
 	private final UUID orderId;
@@ -34,7 +37,6 @@ public class Order {
 		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
 		checkNotNull(address, "address 는 공백이면 안됩니다");
 		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
-		checkArgument(!orderItems.isEmpty(), "item을 하나라도 선택해야 합니다.");
 		checkArgument(totalPrice > 0, "총 금액은 0원을 초과해야 합니다.");
 
 		this.orderId = orderId;
@@ -55,5 +57,20 @@ public class Order {
 
 	private boolean checkEmail(String email) {
 		return Pattern.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", email);
+	}
+
+	public void updateEmail(String email) {
+		this.email = email;
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	public void updateAddress(String address) {
+		this.address = address;
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	public void supdatePostcode(String postcode) {
+		this.postcode = postcode;
+		this.updatedAt = LocalDateTime.now();
 	}
 }

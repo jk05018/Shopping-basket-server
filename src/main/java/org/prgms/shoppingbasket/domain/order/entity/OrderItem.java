@@ -5,6 +5,9 @@ import static com.google.common.base.Preconditions.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.Getter;
+
+@Getter
 public class OrderItem {
 	/* Order 식별번호 */
 	private final UUID orderId;
