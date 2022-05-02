@@ -83,4 +83,29 @@ class JdbcOrderRepositoryTest {
 		assertThat(findUpdatedOrder.get().getAddress()).isEqualTo(updateOrder.getAddress());
 		assertThat(findUpdatedOrder.get().getEmail()).isEqualTo(updateOrder.getEmail());
 	}
+
+	@DisplayName("product save Test without voucher")
+	@Test
+	void product_save_pass_test_without_voucher() {
+		// given
+		final Product product1 = productRepository.save(new Product("product1", 10000, 20, "product1 입니다!"));
+		final Product product2 = productRepository.save(new Product("product2", 20000, 10, "product2 입니다!"));
+
+		List<OrderItem> orderItems = new ArrayList<>();
+		orderItems.add(new OrderItem(product1.getProductId(), product1.getPrice(), 10));
+		orderItems.add(new OrderItem(product2.getProductId(), product2.getPrice(), 5));
+
+		final Order order = new Order(null, "jan@naver.com", "seoul gangnam", "12345",
+			orderItems);
+
+		// when
+		final Order savedOrder = orderRepository.save(order);
+		final Optional<Order> findOrder = orderRepository.findById(savedOrder.getOrderId());
+
+		// then
+		assertThat(findOrder).isNotNull();
+		assertThat(findOrder.get().getVoucherId()).isNull();
+		assertThat(findOrder.get().getOrderItems().size()).isEqualTo(2);
+
+	}
 }

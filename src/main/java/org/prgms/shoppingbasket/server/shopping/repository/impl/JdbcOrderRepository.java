@@ -27,7 +27,6 @@ public class JdbcOrderRepository implements OrderRepository {
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 
-
 	@Override
 	public Order save(Order order) {
 		final String ORDER_SAVE_SQL =

@@ -31,7 +31,6 @@ public class Order {
 	public Order(UUID orderId, UUID voucherId, String email, String address, String postcode,
 		List<OrderItem> orderItems, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		checkNotNull(orderId, "orderId는 null이면 안됩니다.");
-		checkNotNull(voucherId, "voucherId는 null이면 안됩니다.");
 		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
 		checkNotNull(address, "address 는 공백이면 안됩니다");
 		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
