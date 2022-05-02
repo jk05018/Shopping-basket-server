@@ -12,6 +12,7 @@ import org.prgms.shoppingbasket.server.common.exception.DatabaseException;
 import org.prgms.shoppingbasket.server.common.utils.LocalDateTimeUtil;
 import org.prgms.shoppingbasket.server.common.utils.UUIDConverter;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
+import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -87,7 +88,7 @@ public class JdbcVoucherRepository implements VoucherRepository {
 			final LocalDateTime createdAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("created_at"));
 			final LocalDateTime updatedAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("updated_at"));
 
-			return new Voucher(voucherId, value, type, description, createdAt, updatedAt);
+			return VoucherType.valueOf(type).create(voucherId, value, type, description, createdAt, updatedAt);
 		};
 	}
 }
