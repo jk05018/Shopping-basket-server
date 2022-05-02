@@ -23,21 +23,18 @@ public class Order {
 	private String postcode;
 	/* 주문 상품 리스트 */
 	private final List<OrderItem> orderItems;
-	/* 주문 총 가격 */
-	private int totalPrice;
 	/* 주문 생성 시간 */
 	private final LocalDateTime createdAt;
 	/* 주문 마지만 update 시간 */
 	private LocalDateTime updatedAt;
 
 	public Order(UUID orderId, UUID voucherId, String email, String address, String postcode,
-		List<OrderItem> orderItems, int totalPrice) {
+		List<OrderItem> orderItems, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		checkNotNull(orderId, "orderId는 null이면 안됩니다.");
 		checkNotNull(voucherId, "voucherId는 null이면 안됩니다.");
 		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
 		checkNotNull(address, "address 는 공백이면 안됩니다");
 		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
-		checkArgument(totalPrice > 0, "총 금액은 0원을 초과해야 합니다.");
 
 		this.orderId = orderId;
 		this.voucherId = voucherId;
@@ -45,14 +42,14 @@ public class Order {
 		this.address = address;
 		this.postcode = postcode;
 		this.orderItems = orderItems;
-		this.totalPrice = totalPrice;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	public Order(UUID voucherId, String email, String address, String postcode,
-		List<OrderItem> orderItems, int totalPrice) {
-		this(UUID.randomUUID(), voucherId, email, address, postcode, orderItems, totalPrice);
+		List<OrderItem> orderItems) {
+		this(UUID.randomUUID(), voucherId, email, address, postcode, orderItems, LocalDateTime.now(),
+			LocalDateTime.now());
 	}
 
 	private boolean checkEmail(String email) {

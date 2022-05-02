@@ -18,24 +18,22 @@ class OrderTest {
 		String email = "jk05018@naver.com";
 
 		// when
-		final Order order = new Order(voucher.getVoucherId(), email
-			, "서울시 강남구", "12314", Collections.EMPTY_LIST, 10000);
+		final Order order = new Order(voucher.getVoucherId(), email, "서울시 강남구", "12314", Collections.EMPTY_LIST);
 		// then
 
 		assertThat(order.getOrderId()).isNotNull();
 		assertThat(order.getVoucherId()).isEqualTo(voucher.getVoucherId());
 		assertThat(order.getEmail()).isEqualTo(email);
-		assertThat(order.getTotalPrice()).isEqualTo(10000);
 
 		//given
 		final Product product = new Product("snack", 1000, 10, "my snack");
 
 		//when
-		final OrderItem orderItem = new OrderItem(order.getOrderId(), product.getProductId(), product.getPrice(), 10);
+		final OrderItem orderItem = new OrderItem( product.getProductId(), product.getPrice(), 10);
 
 		//then
-		assertThat(orderItem.getOrderId()).isNotNull();
 		assertThat(orderItem.getProductId()).isEqualTo(product.getProductId());
+		assertThat(orderItem.getQuantity()).isEqualTo(10);
 	}
 
 	@DisplayName("나중에 서비스에서 할때 OrderItem의 주문량이 product의 remain보다 작을 때 예외를 내도록 처리하자 Controller 단에서 처리할 수 있음 더 좋고")

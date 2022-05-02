@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Product;
+import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class JdbcProductRepositoryTest {
 
 	@Autowired
-	JdbcProductRepository productRepository;
+	ProductRepository productRepository;
 
 	@AfterEach
 	void afterEach(){
@@ -84,7 +85,7 @@ class JdbcProductRepositoryTest {
 		savedProduct.updateProductName("updatedSanck");
 		savedProduct.updateRemainQuantity(savedProduct.getRemainQuantity() - 10);
 
-		productRepository.update(savedProduct);
+		productRepository.	update(savedProduct);
 		//then
 
 		final Optional<Product> updatedProduct = productRepository.findById(savedProduct.getProductId());
