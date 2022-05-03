@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Order;
@@ -14,15 +13,15 @@ import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
 import org.prgms.shoppingbasket.server.shopping.entity.Product;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
 import org.prgms.shoppingbasket.server.shopping.repository.OrderRepository;
-import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
-import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.prgms.shoppingbasket.server.shopping.service.OrderService;
 import org.prgms.shoppingbasket.server.shopping.service.ProductService;
 import org.prgms.shoppingbasket.server.shopping.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class OrderServiceImplTest {
 
 	@Autowired
@@ -33,17 +32,6 @@ class OrderServiceImplTest {
 	VoucherService voucherService;
 	@Autowired
 	OrderRepository orderRepository;
-	@Autowired
-	ProductRepository productRepository;
-	@Autowired
-	VoucherRepository voucherRepository;
-
-	@AfterEach
-	void afterEach() {
-		orderRepository.deleteAll();
-		voucherRepository.deleteAll();
-		productRepository.deleteAll();
-	}
 
 	@DisplayName("order service create test Voucher 있을 때")
 	@Test

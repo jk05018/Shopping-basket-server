@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
@@ -13,17 +12,14 @@ import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class JdbcVoucherRepositoryTest {
 
 	@Autowired
 	VoucherRepository voucherRepository;
-
-	@AfterEach
-	void afterEach() {
-		voucherRepository.deleteAll();
-	}
 
 	@DisplayName("productRepository 자동 주입 테스트")
 	@Test
@@ -54,7 +50,6 @@ class JdbcVoucherRepositoryTest {
 		assertThat(findPercentVoucher.get().getVoucherId()).isEqualTo(percentVoucher.getVoucherId());
 		assertThat(findPercentVoucher.get().getType()).isEqualTo(VoucherType.PERCENT_DISCOUNT_VOUCHER.name());
 	}
-
 
 	@DisplayName("findAll Test")
 	@Test

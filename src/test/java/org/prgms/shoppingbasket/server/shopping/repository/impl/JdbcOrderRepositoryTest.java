@@ -3,12 +3,9 @@ package org.prgms.shoppingbasket.server.shopping.repository.impl;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Order;
@@ -21,8 +18,10 @@ import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class JdbcOrderRepositoryTest {
 
 	@Autowired
@@ -31,13 +30,6 @@ class JdbcOrderRepositoryTest {
 	VoucherRepository voucherRepository;
 	@Autowired
 	ProductRepository productRepository;
-
-	@AfterEach
-	void afterEach() {
-		orderRepository.deleteAll();
-		voucherRepository.deleteAll();
-		productRepository.deleteAll();
-	}
 
 	@DisplayName("productRepository 자동 주입 테스트")
 	@Test

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Product;
@@ -13,19 +12,16 @@ import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
 import org.prgms.shoppingbasket.server.shopping.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class ProductServiceImplTest {
 
 	@Autowired
 	ProductService productService;
 	@Autowired
 	ProductRepository productRepository;
-
-	@AfterEach
-	void afterEach() {
-		productRepository.deleteAll();
-	}
 
 	@DisplayName("productService createProduct testd")
 	@Test

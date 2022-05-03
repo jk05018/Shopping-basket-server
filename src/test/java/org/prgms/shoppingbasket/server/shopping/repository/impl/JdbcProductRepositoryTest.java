@@ -5,24 +5,20 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Product;
 import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class JdbcProductRepositoryTest {
 
 	@Autowired
 	ProductRepository productRepository;
-
-	@AfterEach
-	void afterEach(){
-		productRepository.deleteAll();
-	}
 
 	@DisplayName("productRepository 자동 주입 테스트")
 	@Test
@@ -56,7 +52,7 @@ class JdbcProductRepositoryTest {
 
 	@DisplayName("findAll Test")
 	@Test
-	void findAll_Test(){
+	void findAll_Test() {
 		// given
 		final Product product1 = new Product("snack", 10000, 20, "this is snack");
 		final Product product2 = new Product("snack", 10000, 20, null);
@@ -74,7 +70,7 @@ class JdbcProductRepositoryTest {
 
 	@DisplayName("update test")
 	@Test
-	void update_test(){
+	void update_test() {
 		// given
 		final Product product = new Product("snack", 10000, 20, "this is snack");
 		final Product savedProduct = productRepository.save(product);
@@ -85,7 +81,7 @@ class JdbcProductRepositoryTest {
 		savedProduct.updateProductName("updatedSanck");
 		savedProduct.updateRemainQuantity(savedProduct.getRemainQuantity() - 10);
 
-		productRepository.	update(savedProduct);
+		productRepository.update(savedProduct);
 		//then
 
 		final Optional<Product> updatedProduct = productRepository.findById(savedProduct.getProductId());
@@ -94,8 +90,6 @@ class JdbcProductRepositoryTest {
 		assertThat(updatedProduct.get().getPrice()).isEqualTo(savedProduct.getPrice());
 		assertThat(updatedProduct.get().getProductName()).isEqualTo(savedProduct.getProductName());
 		assertThat(updatedProduct.get().getRemainQuantity()).isEqualTo(savedProduct.getRemainQuantity());
-
-
 
 	}
 }
