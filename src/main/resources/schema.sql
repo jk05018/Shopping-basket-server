@@ -41,6 +41,6 @@ create table vouchers
     type        VARCHAR(50)  NOT NULL,
     description VARCHAR(200) NOT NULL,
     created_at  datetime(6)  NOT NULL,
-    updated_at  datetime(6) DEFAULT NULL,
+    updated_at  datetime(6) DEFAULT NULL
 );
 
