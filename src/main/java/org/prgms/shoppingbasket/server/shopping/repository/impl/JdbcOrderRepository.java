@@ -41,9 +41,9 @@ public class JdbcOrderRepository implements OrderRepository {
 		order.getOrderItems()
 			.forEach(item -> {
 				jdbcTemplate.update(
-					"INSERT INTO order_items(order_id, product_id, price, quantity, created_at, updated_at) " +
-						"values (:orderId, :productId, :price, :quantity, :createdAt, :updatedAt) ",
-					orderItemToParamMap(order.getOrderId(), order.getCreatedAt(), order.getUpdatedAt(), item));
+					"INSERT INTO order_items(order_id, product_id, price, quantity) " +
+						"values (:orderId, :productId, :price, :quantity) ",
+					orderItemToParamMap(order.getOrderId(), item));
 			});
 
 		return order;
@@ -111,15 +111,12 @@ public class JdbcOrderRepository implements OrderRepository {
 		return paramMap;
 	}
 
-	private Map<String, Object> orderItemToParamMap(UUID orderId, LocalDateTime createdAt, LocalDateTime updatedAt,
-		OrderItem orderItem) {
+	private Map<String, Object> orderItemToParamMap(UUID orderId, OrderItem orderItem) {
 		final HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("orderId", UUIDConverter.uuidToBytes(orderId));
 		paramMap.put("productId", UUIDConverter.uuidToBytes(orderItem.getProductId()));
 		paramMap.put("price", orderItem.getPrice());
 		paramMap.put("quantity", orderItem.getQuantity());
-		paramMap.put("createdAt", createdAt);
-		paramMap.put("updatedAt", updatedAt);
 
 		return paramMap;
 	}
@@ -146,10 +143,8 @@ public class JdbcOrderRepository implements OrderRepository {
 			final UUID productId = UUIDConverter.bytesToUUID(rs.getBytes("product_id"));
 			final int price = rs.getInt("price");
 			final int quantity = rs.getInt("quantity");
-			final LocalDateTime createdAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("created_at"));
-			final LocalDateTime updatedAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("updated_at"));
 
-			return new OrderItem(productId, price, quantity, createdAt, updatedAt);
+			return new OrderItem(productId, price, quantity);
 
 		};
 	}
