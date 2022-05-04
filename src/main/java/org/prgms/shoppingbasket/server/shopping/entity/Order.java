@@ -28,12 +28,10 @@ public class Order {
 	/* 주문 마지만 update 시간 */
 	private LocalDateTime updatedAt;
 
-	public Order(UUID orderId, UUID voucherId, String email, String address, String postcode,
+	private Order(UUID orderId, UUID voucherId, String email, String address, String postcode,
 		List<OrderItem> orderItems, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		checkNotNull(orderId, "orderId는 null이면 안됩니다.");
-		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
-		checkNotNull(address, "address 는 공백이면 안됩니다");
-		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
+		validateFields(email, address, postcode);
 
 		this.orderId = orderId;
 		this.voucherId = voucherId;
@@ -45,28 +43,36 @@ public class Order {
 		this.updatedAt = updatedAt;
 	}
 
-	public Order(UUID voucherId, String email, String address, String postcode,
-		List<OrderItem> orderItems) {
-		this(UUID.randomUUID(), voucherId, email, address, postcode, orderItems, LocalDateTime.now(),
-			LocalDateTime.now());
+	private void validateFields(String email, String address, String postcode){
+		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
+		checkNotNull(address, "address 는 공백이면 안됩니다");
+		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
 	}
 
 	private boolean checkEmail(String email) {
 		return Pattern.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", email);
 	}
 
-	public void updateEmail(String email) {
+	public static Order create(UUID voucherId, String email, String address, String postcode,
+		List<OrderItem> orderItems) {
+		return new Order(UUID.randomUUID(), voucherId, email, address, postcode, orderItems, LocalDateTime.now(),
+			LocalDateTime.now());
+	}
+
+	/**
+	 * 데이터베이스 Binding 용
+	 */
+	public static Order bind(UUID orderId, UUID voucherId, String email, String address, String postcode,
+		List<OrderItem> orderItems, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		return new Order(orderId, voucherId, email, address, postcode, orderItems, createdAt, updatedAt);
+	}
+
+	public void updateOrder(String email, String address, String postcode) {
+		validateFields(email, address, postcode);
 		this.email = email;
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	public void updateAddress(String address) {
 		this.address = address;
-		this.updatedAt = LocalDateTime.now();
+		this.postcode = postcode;
+		this.updatedAt = updatedAt;
 	}
 
-	public void supdatePostcode(String postcode) {
-		this.postcode = postcode;
-		this.updatedAt = LocalDateTime.now();
-	}
 }

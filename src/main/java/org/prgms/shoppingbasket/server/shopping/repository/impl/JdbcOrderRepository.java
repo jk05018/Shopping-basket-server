@@ -1,5 +1,7 @@
 package org.prgms.shoppingbasket.server.shopping.repository.impl;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,19 +15,24 @@ import org.prgms.shoppingbasket.server.common.utils.LocalDateTimeUtil;
 import org.prgms.shoppingbasket.server.common.utils.UUIDConverter;
 import org.prgms.shoppingbasket.server.shopping.entity.Order;
 import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
+import org.prgms.shoppingbasket.server.shopping.repository.JdbcRepository;
+import org.prgms.shoppingbasket.server.shopping.repository.OrderItemRepository;
 import org.prgms.shoppingbasket.server.shopping.repository.OrderRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.base.Preconditions;
+
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcOrderRepository implements OrderRepository {
+public class JdbcOrderRepository implements OrderRepository, JdbcRepository<Order> {
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
+	private final OrderItemRepository orderItemRepository;
 
 	@Override
 	public Order save(Order order) {
@@ -34,17 +41,7 @@ public class JdbcOrderRepository implements OrderRepository {
 				+ " values (:orderId, :voucherId, :email, :address, :postcode, :createdAt, :updatedAt)";
 		final int update = jdbcTemplate.update(ORDER_SAVE_SQL, orderToParamMap(order));
 
-		if (update != 1) {
-			throw new DatabaseException("order가 save되지 않았습니다.");
-		}
-
-		order.getOrderItems()
-			.forEach(item -> {
-				jdbcTemplate.update(
-					"INSERT INTO order_items(order_id, product_id, price, quantity) " +
-						"values (:orderId, :productId, :price, :quantity) ",
-					orderItemToParamMap(order.getOrderId(), item));
-			});
+		checkState(update == 1, "order가 save되 않았습니다. orderId = " + order.getOrderId());
 
 		return order;
 	}
@@ -55,7 +52,7 @@ public class JdbcOrderRepository implements OrderRepository {
 
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(ORDER_FIND_BY_ID_SQL,
-				Collections.singletonMap("orderId", UUIDConverter.uuidToBytes(orderId)), toOrderMapper()));
+				Collections.singletonMap("orderId", UUIDConverter.uuidToBytes(orderId)), toMapper()));
 
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
@@ -65,7 +62,7 @@ public class JdbcOrderRepository implements OrderRepository {
 	@Override
 	public List<Order> findAll() {
 		final String ORDER_FIND_ALL_SQL = "select * from orders";
-		return jdbcTemplate.query(ORDER_FIND_ALL_SQL, toOrderMapper());
+		return jdbcTemplate.query(ORDER_FIND_ALL_SQL, toMapper());
 	}
 
 	@Override
@@ -77,9 +74,7 @@ public class JdbcOrderRepository implements OrderRepository {
 
 		final int update = jdbcTemplate.update(ORDER_UPDATE_SQL, orderToParamMap(order));
 
-		if (update != 1) {
-			throw new DatabaseException("order가 update되지 않았습니다.");
-		}
+		checkState(update == 1, "order가 update되지 않았습니다. orderId = " + order.getOrderId());
 
 		return order;
 	}
@@ -90,12 +85,6 @@ public class JdbcOrderRepository implements OrderRepository {
 
 		jdbcTemplate.update(DELETE_SQL, Collections.emptyMap());
 
-	}
-
-	private List<OrderItem> findOrderItemsByOrderId(UUID orderId) {
-		final String ORDER_ITEM_FIND_ALL_SQL = "select * from order_items where order_id = :orderId";
-		return jdbcTemplate.query(ORDER_ITEM_FIND_ALL_SQL,
-			Collections.singletonMap("orderId", UUIDConverter.uuidToBytes(orderId)), toOrderItemMapper());
 	}
 
 	private Map<String, Object> orderToParamMap(Order order) {
@@ -111,17 +100,18 @@ public class JdbcOrderRepository implements OrderRepository {
 		return paramMap;
 	}
 
-	private Map<String, Object> orderItemToParamMap(UUID orderId, OrderItem orderItem) {
-		final HashMap<String, Object> paramMap = new HashMap<>();
-		paramMap.put("orderId", UUIDConverter.uuidToBytes(orderId));
-		paramMap.put("productId", UUIDConverter.uuidToBytes(orderItem.getProductId()));
-		paramMap.put("price", orderItem.getPrice());
-		paramMap.put("quantity", orderItem.getQuantity());
+	// return Map.of(
+	// 	"orderId", UUIDConverter.uuidToBytes(order.getOrderId()),
+	// 	"voucherId", UUIDConverter.uuidToBytes(order.getVoucherId()),
+	// 	"email", order.getEmail(),
+	// 	"address", order.getAddress(),
+	// 	"postcode", order.getPostcode(),
+	// 	"createdAt", order.getCreatedAt(),
+	// 	"updatedAt", order.getUpdatedAt()
+	// 	);
 
-		return paramMap;
-	}
-
-	private RowMapper<Order> toOrderMapper() {
+	@Override
+	public RowMapper<Order> toMapper() {
 		return (rs, rowNum) -> {
 			final UUID orderId = UUIDConverter.bytesToUUID(rs.getBytes("order_id"));
 			final UUID voucherId = UUIDConverter.bytesToUUID(rs.getBytes("voucher_id"));
@@ -131,21 +121,9 @@ public class JdbcOrderRepository implements OrderRepository {
 			final LocalDateTime createdAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("created_at"));
 			final LocalDateTime updatedAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("updated_at"));
 
-			final List<OrderItem> orderItems = findOrderItemsByOrderId(orderId);
+			final List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(orderId);
 
-			return new Order(orderId, voucherId, email, address, postcode, orderItems, createdAt, updatedAt);
-
-		};
-	}
-
-	private RowMapper<OrderItem> toOrderItemMapper() {
-		return (rs, rowNum) -> {
-			final UUID productId = UUIDConverter.bytesToUUID(rs.getBytes("product_id"));
-			final int price = rs.getInt("price");
-			final int quantity = rs.getInt("quantity");
-
-			return new OrderItem(productId, price, quantity);
-
+			return Order.bind(orderId, voucherId, email, address, postcode, orderItems, createdAt, updatedAt);
 		};
 	}
 }

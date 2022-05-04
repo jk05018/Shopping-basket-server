@@ -18,7 +18,7 @@ class OrderTest {
 		String email = "jk05018@naver.com";
 
 		// when
-		final Order order = new Order(voucher.getVoucherId(), email, "서울시 강남구", "12314", Collections.EMPTY_LIST);
+		final Order order = Order.create(voucher.getVoucherId(), email, "서울시 강남구", "12314", Collections.EMPTY_LIST);
 		// then
 
 		assertThat(order.getOrderId()).isNotNull();
@@ -26,13 +26,13 @@ class OrderTest {
 		assertThat(order.getEmail()).isEqualTo(email);
 
 		//given
-		final Product product = new Product("snack", 1000, 10, "my snack");
+		final Product product = Product.create("snack", 1000, 10, "my snack");
 
 		//when
-		final OrderItem orderItem = new OrderItem( product.getProductId(), product.getPrice(), 10);
+		final OrderItem orderItem = OrderItem.create(product.getId(), product.getPrice(), 10);
 
 		//then
-		assertThat(orderItem.getProductId()).isEqualTo(product.getProductId());
+		assertThat(orderItem.getProductId()).isEqualTo(product.getId());
 		assertThat(orderItem.getQuantity()).isEqualTo(10);
 	}
 

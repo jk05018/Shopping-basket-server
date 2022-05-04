@@ -17,6 +17,7 @@ import org.prgms.shoppingbasket.server.shopping.service.OrderService;
 import org.prgms.shoppingbasket.server.shopping.service.ProductService;
 import org.prgms.shoppingbasket.server.shopping.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +45,8 @@ class OrderServiceImplTest {
 		final Product product2 = productService.createProduct("product2", 20000, 30, "product2");
 
 		List<OrderItem> orderItems = new ArrayList<>();
-		orderItems.add(new OrderItem(product1.getProductId(), product1.getPrice(), 10));
-		orderItems.add(new OrderItem(product2.getProductId(), product2.getPrice(), 10));
+		orderItems.add(OrderItem.create(product1.getId(), product1.getPrice(), 10));
+		orderItems.add(OrderItem.create(product2.getId(), product2.getPrice(), 10));
 
 		final Order savedOrder = orderService.createOrder(voucher.getVoucherId(), "han@email.com", "gangnam", "12345",
 			orderItems);
@@ -58,7 +59,7 @@ class OrderServiceImplTest {
 		assertThat(findOrder.get().getVoucherId()).isEqualTo(voucher.getVoucherId());
 		assertThat(findOrder.get().getEmail()).isEqualTo("han@email.com");
 		assertThat(findOrder.get().getOrderItems()).map(i -> i.getProductId())
-			.contains(product1.getProductId(), product2.getProductId());
+			.contains(product1.getId(), product2.getId());
 
 	}
 
@@ -70,8 +71,8 @@ class OrderServiceImplTest {
 		final Product product2 = productService.createProduct("product2", 20000, 30, "product2");
 
 		List<OrderItem> orderItems = new ArrayList<>();
-		orderItems.add(new OrderItem(product1.getProductId(), product1.getPrice(), 10));
-		orderItems.add(new OrderItem(product2.getProductId(), product2.getPrice(), 10));
+		orderItems.add(OrderItem.create(product1.getId(), product1.getPrice(), 10));
+		orderItems.add(OrderItem.create(product2.getId(), product2.getPrice(), 10));
 
 		final Order savedOrder = orderService.createOrder(null, "han@email.com", "gangnam", "12345",
 			orderItems);
@@ -84,7 +85,7 @@ class OrderServiceImplTest {
 		assertThat(findOrder.get().getVoucherId()).isNull();
 		assertThat(findOrder.get().getEmail()).isEqualTo("han@email.com");
 		assertThat(findOrder.get().getOrderItems()).map(i -> i.getProductId())
-			.contains(product1.getProductId(), product2.getProductId());
+			.contains(product1.getId(), product2.getId());
 
 	}
 
