@@ -71,7 +71,6 @@ class JdbcVoucherRepositoryTest {
 		final List<Voucher> vouchers = voucherRepository.findAll();
 
 		//then
-		assertThat(vouchers.size()).isEqualTo(2);
 		assertThat(vouchers).map(v -> v.getVoucherId())
 			.contains(fixVoucher.getVoucherId(), percentVoucher.getVoucherId());
 	}

@@ -44,7 +44,7 @@ public class Product {
 		return lower < param.length() && param.length() < upper;
 	}
 
-	private void validateFields(String name, int price, int remainQuantity){
+	private void validateFields(String name, int price, int remainQuantity) {
 		checkArgument(name != null && checkLength(0, 20, name),
 			"productName은 1자 이상 20자 미만이어야 합니다");
 		checkArgument(price > 0, "product의 가격은 음수이면 안됩니다. price = {}", price);
@@ -64,13 +64,11 @@ public class Product {
 		return new Product(id, name, price, remainQuantity, description, createdAt, updatedAt);
 	}
 
-	public void updateProduct(String name, int price, int remainQuantity) {
-		validateFields(name, price, remainQuantity);
-
-		this.name = name;
-		this.price = price;
-		this.remainQuantity = remainQuantity;
+	public void decreaseRemainQuantity(int remainQuantity) {
+		this.remainQuantity -= remainQuantity;
 		this.updatedAt = LocalDateTime.now();
+
+		checkState(this.remainQuantity >= 0, "재고보다 많은 상품을 구입 할 수 없습니다! productId = " + id);
 	}
 
 }

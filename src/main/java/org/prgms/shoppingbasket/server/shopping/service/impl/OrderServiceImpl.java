@@ -1,7 +1,6 @@
 package org.prgms.shoppingbasket.server.shopping.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.prgms.shoppingbasket.server.shopping.entity.Order;

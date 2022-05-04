@@ -51,7 +51,6 @@ class ProductServiceImplTest {
 		final List<Product> products = productService.getAllProducts();
 
 		//then
-		assertThat(products.size()).isEqualTo(2);
 		assertThat(products).map(p -> p.getId())
 			.contains(savedProduct1.getId(), savedProduct2.getId());
 

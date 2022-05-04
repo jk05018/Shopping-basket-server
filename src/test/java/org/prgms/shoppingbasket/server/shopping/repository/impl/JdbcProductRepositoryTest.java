@@ -61,7 +61,6 @@ class JdbcProductRepositoryTest {
 		final List<Product> products = productRepository.findAll();
 
 		//then
-		assertThat(products.size()).isEqualTo(2);
 		assertThat(products).contains(product1, product2);
 	}
 
@@ -72,7 +71,7 @@ class JdbcProductRepositoryTest {
 		final Product product = Product.create("snack", 10000, 20, "this is snack");
 		final Product savedProduct = productRepository.save(product);
 
-		savedProduct.updateProduct("updatedSnack", 20000, 10);
+		savedProduct.decreaseRemainQuantity(10);
 
 		//when
 		productRepository.update(savedProduct);
@@ -80,8 +79,6 @@ class JdbcProductRepositoryTest {
 		final Product updatedProduct = productRepository.findById(savedProduct.getId()).orElseThrow();
 
 		//then
-		assertThat(updatedProduct.getName()).isEqualTo("updatedSnack");
-		assertThat(updatedProduct.getPrice()).isEqualTo(20000);
 		assertThat(updatedProduct.getRemainQuantity()).isEqualTo(10);
 
 	}

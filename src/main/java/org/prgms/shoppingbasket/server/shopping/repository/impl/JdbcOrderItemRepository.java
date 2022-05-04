@@ -1,13 +1,11 @@
 package org.prgms.shoppingbasket.server.shopping.repository.impl;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.prgms.shoppingbasket.server.common.utils.UUIDConverter;
-import org.prgms.shoppingbasket.server.shopping.entity.Order;
 import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
 import org.prgms.shoppingbasket.server.shopping.repository.JdbcRepository;
 import org.prgms.shoppingbasket.server.shopping.repository.OrderItemRepository;

@@ -53,7 +53,6 @@ class VoucherServiceImplTest {
 		final List<Voucher> vouchers = voucherService.getAllVouchers();
 
 		//then
-		assertThat(vouchers.size()).isEqualTo(2);
 		assertThat(vouchers).map(p -> p.getVoucherId())
 			.contains(savedVoucher1.getVoucherId(), savedVoucher2.getVoucherId());
 

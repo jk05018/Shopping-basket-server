@@ -28,12 +28,12 @@ public class Voucher {
 	private Voucher(UUID voucherId, int value, String type, String description, LocalDateTime createdAt,
 		LocalDateTime updatedAt) {
 		checkNotNull(voucherId, "voucherId는 null이면 안됩니다.");
-		checkNotNull(type != null , "voucherType는 null이면 안됩니다.");
+		checkNotNull(type != null, "voucherType는 null이면 안됩니다.");
 		checkArgument(0 < value && value <= 1000000, "할인 금액은 0원 이상 100만원 미만이어야 합니다.");
 		checkArgument(description != null && description.length() > 0, "description은 한글자 이상이어야 합니다.");
 
 		this.voucherId = voucherId;
-		this.value = validateValueByType(value,type);
+		this.value = validateValueByType(value, type);
 		this.type = type;
 		this.description = description;
 		this.createdAt = createdAt;
@@ -41,13 +41,13 @@ public class Voucher {
 	}
 
 	private int validateValueByType(int value, String type) {
-		if(type.equals(VoucherType.PERCENT_DISCOUNT_VOUCHER.name())){
+		if (type.equals(VoucherType.PERCENT_DISCOUNT_VOUCHER.name())) {
 			checkArgument(value > 0 && value <= 100, "할인율은 1% 이상 100% 이하여야 합니다.");
 		}
 		return value;
 	}
 
-	public static Voucher create( int value, String type, String description) {
+	public static Voucher create(int value, String type, String description) {
 		return new Voucher(UUID.randomUUID(), value, type, description, LocalDateTime.now(), LocalDateTime.now());
 	}
 
@@ -55,9 +55,8 @@ public class Voucher {
 	 * 데이터베이스 Binding 용
 	 */
 	public static Voucher bind(UUID voucherId, int value, String type, String description, LocalDateTime createdAt,
-		LocalDateTime updatedAt){
+		LocalDateTime updatedAt) {
 		return new Voucher(voucherId, value, type, description, createdAt, updatedAt);
 	}
-
 
 }

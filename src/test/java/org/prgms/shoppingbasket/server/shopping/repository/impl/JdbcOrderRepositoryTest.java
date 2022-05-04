@@ -66,7 +66,7 @@ class JdbcOrderRepositoryTest {
 
 		// update test
 		// given
-		findOrder.updateOrder("update@email.com", "pohang", "1324");
+		findOrder.updateDeliveryDestination("update@email.com", "pohang", "1324");
 
 		// when
 		orderRepository.update(findOrder);

@@ -5,8 +5,6 @@ import static com.google.common.base.Preconditions.*;
 import java.io.Serializable;
 import java.util.UUID;
 
-import org.prgms.shoppingbasket.server.shopping.repository.OrderItemRepository;
-
 import lombok.Getter;
 
 @Getter

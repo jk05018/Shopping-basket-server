@@ -21,10 +21,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
-public class JdbcProductRepository implements ProductRepository , JdbcRepository<Product> {
+public class JdbcProductRepository implements ProductRepository, JdbcRepository<Product> {
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -35,7 +37,7 @@ public class JdbcProductRepository implements ProductRepository , JdbcRepository
 				+ " values (:productId, :productName, :price, :remainQuantity, :description, :createdAt, :updatedAt)";
 		final int update = jdbcTemplate.update(PRODUCT_SAVE_SQL, productToParamMap(product));
 
-		checkState(update == 1 , "Product가 save 되지 않았습니다. productId = " + product.getId());
+		checkState(update == 1, "Product가 save 되지 않았습니다. productId = " + product.getId());
 
 		return product;
 	}
@@ -62,13 +64,13 @@ public class JdbcProductRepository implements ProductRepository , JdbcRepository
 	@Override
 	public Product update(Product product) {
 		final String PRODUCT_UPDATE_SQL =
-			"update products set product_id = :productId, product_name = :productName , price = :price,"
+			"update products set product_name = :productName , price = :price,"
 				+ " remain_quantity = :remainQuantity, description = :description, created_at = :createdAt, updated_at = :updatedAt"
 				+ " where product_id = :productId";
 
 		final int update = jdbcTemplate.update(PRODUCT_UPDATE_SQL, productToParamMap(product));
 
-		checkState(update == 1 , "Product가 update 되지 않았습니다. productId = " + product.getId());
+		checkState(update == 1, "Product가 update 되지 않았습니다. productId = " + product.getId());
 
 		return product;
 	}

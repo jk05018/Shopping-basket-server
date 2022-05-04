@@ -43,7 +43,7 @@ public class Order {
 		this.updatedAt = updatedAt;
 	}
 
-	private void validateFields(String email, String address, String postcode){
+	private void validateFields(String email, String address, String postcode) {
 		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
 		checkNotNull(address, "address 는 공백이면 안됩니다");
 		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
