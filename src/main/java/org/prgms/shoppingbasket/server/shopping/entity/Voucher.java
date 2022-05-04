@@ -25,7 +25,7 @@ public class Voucher {
 	/* 바우처 마지막 update 시간 */
 	private LocalDateTime updatedAt;
 
-	public Voucher(UUID voucherId, int value, String type, String description, LocalDateTime createdAt,
+	private Voucher(UUID voucherId, int value, String type, String description, LocalDateTime createdAt,
 		LocalDateTime updatedAt) {
 		checkNotNull(voucherId, "voucherId는 null이면 안됩니다.");
 		checkNotNull(type != null , "voucherType는 null이면 안됩니다.");
@@ -47,8 +47,16 @@ public class Voucher {
 		return value;
 	}
 
-	public Voucher( int value, String type, String description) {
-		this(UUID.randomUUID(), value, type, description, LocalDateTime.now(), LocalDateTime.now());
+	public static Voucher create( int value, String type, String description) {
+		return new Voucher(UUID.randomUUID(), value, type, description, LocalDateTime.now(), LocalDateTime.now());
+	}
+
+	/**
+	 * 데이터베이스 Binding 용
+	 */
+	public static Voucher bind(UUID voucherId, int value, String type, String description, LocalDateTime createdAt,
+		LocalDateTime updatedAt){
+		return new Voucher(voucherId, value, type, description, createdAt, updatedAt);
 	}
 
 

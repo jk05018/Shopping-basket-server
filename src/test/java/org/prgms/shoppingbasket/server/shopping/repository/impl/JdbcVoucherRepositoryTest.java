@@ -5,12 +5,14 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
 import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,33 +33,36 @@ class JdbcVoucherRepositoryTest {
 	@Test
 	void product_save_pass_test() {
 		// given
-		final Voucher fixVoucher = new Voucher(1000, VoucherType.FIXED_AMOUNT_VOUCHER.name(), "1000원 할인입니다!");
+		final Voucher fixVoucher = VoucherType.FIXED_AMOUNT_VOUCHER.create(1000, "1000원 할인");
+
 		// when
 		final Voucher savedFixVoucher = voucherRepository.save(fixVoucher);
-		final Optional<Voucher> findVoucher = voucherRepository.findById(savedFixVoucher.getVoucherId());
+		final Voucher findVoucher = voucherRepository.findById(savedFixVoucher.getVoucherId()).orElseThrow();
+
 		// then
-		assertThat(findVoucher).isNotNull();
-		assertThat(findVoucher.get().getVoucherId()).isEqualTo(fixVoucher.getVoucherId());
-		assertThat(findVoucher.get().getType()).isEqualTo(VoucherType.FIXED_AMOUNT_VOUCHER.name());
+		assertThat(findVoucher.getVoucherId()).isEqualTo(fixVoucher.getVoucherId());
+		assertThat(findVoucher.getType()).isEqualTo(VoucherType.FIXED_AMOUNT_VOUCHER.name());
+		assertThat(findVoucher.getValue()).isEqualTo(1000);
+		assertThat(findVoucher.getDescription()).isEqualTo("1000원 할인");
 
 		// given
-		final Voucher percentVoucher = new Voucher(50, VoucherType.PERCENT_DISCOUNT_VOUCHER.name(), "50% 할인입니다!");
+		final Voucher percentVoucher = VoucherType.PERCENT_DISCOUNT_VOUCHER.create(50,  "50% 할인");
 		// when
 		final Voucher savevdPercentVoucher = voucherRepository.save(percentVoucher);
-		final Optional<Voucher> findPercentVoucher = voucherRepository.findById(savevdPercentVoucher.getVoucherId());
+		final Voucher findPercentVoucher = voucherRepository.findById(savevdPercentVoucher.getVoucherId()).orElseThrow();
 		// then
-		assertThat(findPercentVoucher).isNotNull();
-		assertThat(findPercentVoucher.get().getVoucherId()).isEqualTo(percentVoucher.getVoucherId());
-		assertThat(findPercentVoucher.get().getType()).isEqualTo(VoucherType.PERCENT_DISCOUNT_VOUCHER.name());
+		assertThat(findPercentVoucher.getVoucherId()).isEqualTo(percentVoucher.getVoucherId());
+		assertThat(findPercentVoucher.getType()).isEqualTo(VoucherType.PERCENT_DISCOUNT_VOUCHER.name());
+		assertThat(findPercentVoucher.getValue()).isEqualTo(50);
+		assertThat(findPercentVoucher.getDescription()).isEqualTo("50% 할인");
 	}
 
 	@DisplayName("findAll Test")
 	@Test
 	void findAll_Test() {
 		// given
-
-		final Voucher fixVoucher = new Voucher(1000, VoucherType.FIXED_AMOUNT_VOUCHER.name(), "1000원 할인입니다!");
-		final Voucher percentVoucher = new Voucher(50, VoucherType.PERCENT_DISCOUNT_VOUCHER.name(), "50% 할인입니다!");
+		final Voucher fixVoucher = VoucherType.FIXED_AMOUNT_VOUCHER.create(1000, "1000원 할인");
+		final Voucher percentVoucher = VoucherType.PERCENT_DISCOUNT_VOUCHER.create(50, "50% 할인입니다!");
 
 		voucherRepository.save(fixVoucher);
 		voucherRepository.save(percentVoucher);

@@ -13,6 +13,7 @@ import org.prgms.shoppingbasket.server.common.utils.LocalDateTimeUtil;
 import org.prgms.shoppingbasket.server.common.utils.UUIDConverter;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
 import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
+import org.prgms.shoppingbasket.server.shopping.repository.JdbcRepository;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcVoucherRepository implements VoucherRepository {
+public class JdbcVoucherRepository implements VoucherRepository, JdbcRepository<Voucher> {
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -47,7 +48,7 @@ public class JdbcVoucherRepository implements VoucherRepository {
 
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(VOUCHER_FIND_BY_ID_SQL,
-				Collections.singletonMap("voucherId", UUIDConverter.uuidToBytes(voucherId)), toVoucherMapper()));
+				Collections.singletonMap("voucherId", UUIDConverter.uuidToBytes(voucherId)), toMapper()));
 
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
@@ -57,7 +58,7 @@ public class JdbcVoucherRepository implements VoucherRepository {
 	@Override
 	public List<Voucher> findAll() {
 		final String VOUCHER_FIND_ALL_SQL = "select * from vouchers";
-		return jdbcTemplate.query(VOUCHER_FIND_ALL_SQL, toVoucherMapper());
+		return jdbcTemplate.query(VOUCHER_FIND_ALL_SQL, toMapper());
 	}
 
 	@Override
@@ -68,18 +69,18 @@ public class JdbcVoucherRepository implements VoucherRepository {
 	}
 
 	private Map<String, Object> voucherToParamMap(Voucher voucher) {
-		final HashMap<String, Object> paramMap = new HashMap<>();
-		paramMap.put("voucherId", UUIDConverter.uuidToBytes(voucher.getVoucherId()));
-		paramMap.put("value", voucher.getValue());
-		paramMap.put("type", voucher.getType());
-		paramMap.put("description", voucher.getDescription());
-		paramMap.put("createdAt", voucher.getCreatedAt());
-		paramMap.put("updatedAt", voucher.getUpdatedAt());
+		return Map.of(
+			"voucherId", UUIDConverter.uuidToBytes(voucher.getVoucherId())
+			, "value", voucher.getValue()
+			, "type", voucher.getType()
+			, "description", voucher.getDescription()
+			, "createdAt", voucher.getCreatedAt()
+			, "updatedAt", voucher.getUpdatedAt()
+		);
 
-		return paramMap;
 	}
 
-	private RowMapper<Voucher> toVoucherMapper() {
+	public RowMapper<Voucher> toMapper() {
 		return (rs, rowNum) -> {
 			final UUID voucherId = UUIDConverter.bytesToUUID(rs.getBytes("voucher_id"));
 			final int value = rs.getInt("value");
@@ -88,7 +89,7 @@ public class JdbcVoucherRepository implements VoucherRepository {
 			final LocalDateTime createdAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("created_at"));
 			final LocalDateTime updatedAt = LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp("updated_at"));
 
-			return VoucherType.valueOf(type).create(voucherId, value, type, description, createdAt, updatedAt);
+			return VoucherType.valueOf(type).bind(voucherId, value, type, description, createdAt, updatedAt);
 		};
 	}
 }

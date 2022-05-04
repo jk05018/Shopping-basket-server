@@ -12,6 +12,7 @@ import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.prgms.shoppingbasket.server.shopping.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
