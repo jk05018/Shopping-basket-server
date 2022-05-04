@@ -11,4 +11,6 @@ public interface OrderService {
 	Order createOrder(UUID voucherId, String email, String address, String postcode, List<OrderItem> orderItems);
 
 	List<Order> getAllOrders();
+
+	Order updateDeliveryDestination(UUID orderId, String email, String address, String postcode);
 }

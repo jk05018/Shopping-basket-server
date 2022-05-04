@@ -14,8 +14,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDto {
-	private UUID voucherId;
+public class OrderCreateDto {
+	private List<UUID> voucherId;
 	private String email;
 	private String address;
 	private String postcode;

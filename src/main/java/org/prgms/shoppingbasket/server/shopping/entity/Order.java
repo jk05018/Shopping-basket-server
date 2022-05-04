@@ -67,12 +67,13 @@ public class Order {
 		return new Order(orderId, voucherId, email, address, postcode, orderItems, createdAt, updatedAt);
 	}
 
-	public void updateOrder(String email, String address, String postcode) {
+	public void updateDeliveryDestination(String email, String address, String postcode) {
 		validateFields(email, address, postcode);
+
 		this.email = email;
 		this.address = address;
 		this.postcode = postcode;
-		this.updatedAt = updatedAt;
+		this.updatedAt = LocalDateTime.now();
 	}
 
 }
