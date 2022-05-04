@@ -16,8 +16,8 @@ public class ProductServiceImpl implements ProductService {
 	private final ProductRepository productRepository;
 
 	@Override
-	public Product createProduct(String productName, int price, int remainQuantity, String description) {
-		final Product product = new Product(productName, price, remainQuantity, description);
+	public Product createProduct(String name, int price, int remainQuantity, String description) {
+		final Product product = Product.create(name, price, remainQuantity, description);
 		return productRepository.save(product);
 	}
 

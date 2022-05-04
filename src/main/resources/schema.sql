@@ -9,6 +9,15 @@ create table products
     updated_at      datetime(6)  DEFAULT NULL
 );
 
+create table vouchers
+(
+    voucher_id  BINARY(16) PRIMARY KEY,
+    value       int          NOT NULL,
+    type        VARCHAR(50)  NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    created_at  datetime(6)  NOT NULL,
+    updated_at  datetime(6) DEFAULT NULL
+);
 
 create table orders
 (
@@ -34,13 +43,4 @@ create table order_items
     CONSTRAINT fk_order_items_to_product FOREIGN KEY (product_id) REFERENCES products (product_id)
 );
 
-create table vouchers
-(
-    voucher_id  BINARY(16) PRIMARY KEY,
-    value       int          NOT NULL,
-    type        VARCHAR(50)  NOT NULL,
-    description VARCHAR(200) NOT NULL,
-    created_at  datetime(6)  NOT NULL,
-    updated_at  datetime(6) DEFAULT NULL
-);
 

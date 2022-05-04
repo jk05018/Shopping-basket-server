@@ -11,6 +11,7 @@ import org.prgms.shoppingbasket.server.shopping.entity.Product;
 import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
 import org.prgms.shoppingbasket.server.shopping.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +31,12 @@ class ProductServiceImplTest {
 		final Product savedProduct = productService.createProduct("product1", 10000, 30, "product1");
 
 		//when
-		final Optional<Product> findProduct = productRepository.findById(savedProduct.getProductId());
+		final Optional<Product> findProduct = productRepository.findById(savedProduct.getId());
 
 		//then
 		assertThat(findProduct).isNotNull();
-		assertThat(findProduct.get().getProductId()).isEqualTo(savedProduct.getProductId());
-		assertThat(findProduct.get().getProductName()).isEqualTo(savedProduct.getProductName());
+		assertThat(findProduct.get().getId()).isEqualTo(savedProduct.getId());
+		assertThat(findProduct.get().getName()).isEqualTo(savedProduct.getName());
 
 	}
 
@@ -51,8 +52,8 @@ class ProductServiceImplTest {
 
 		//then
 		assertThat(products.size()).isEqualTo(2);
-		assertThat(products).map(p -> p.getProductId())
-			.contains(savedProduct1.getProductId(), savedProduct2.getProductId());
+		assertThat(products).map(p -> p.getId())
+			.contains(savedProduct1.getId(), savedProduct2.getId());
 
 	}
 
