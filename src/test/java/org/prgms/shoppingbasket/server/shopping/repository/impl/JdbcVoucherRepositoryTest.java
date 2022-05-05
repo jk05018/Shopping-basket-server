@@ -3,16 +3,13 @@ package org.prgms.shoppingbasket.server.shopping.repository.impl;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
 import org.prgms.shoppingbasket.server.shopping.entity.VoucherType;
 import org.prgms.shoppingbasket.server.shopping.repository.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +20,7 @@ class JdbcVoucherRepositoryTest {
 	@Autowired
 	VoucherRepository voucherRepository;
 
-	@DisplayName("productRepository 자동 주입 테스트")
-	@Test
-	void productRepository_autowired_test() {
-		assertThat(voucherRepository).isNotNull();
-	}
-
-	@DisplayName("product save Test")
+	@DisplayName("voucher 생성 테스트")
 	@Test
 	void product_save_pass_test() {
 		// given
@@ -46,10 +37,11 @@ class JdbcVoucherRepositoryTest {
 		assertThat(findVoucher.getDescription()).isEqualTo("1000원 할인");
 
 		// given
-		final Voucher percentVoucher = VoucherType.PERCENT_DISCOUNT_VOUCHER.create(50,  "50% 할인");
+		final Voucher percentVoucher = VoucherType.PERCENT_DISCOUNT_VOUCHER.create(50, "50% 할인");
 		// when
 		final Voucher savevdPercentVoucher = voucherRepository.save(percentVoucher);
-		final Voucher findPercentVoucher = voucherRepository.findById(savevdPercentVoucher.getVoucherId()).orElseThrow();
+		final Voucher findPercentVoucher = voucherRepository.findById(savevdPercentVoucher.getVoucherId())
+			.orElseThrow();
 		// then
 		assertThat(findPercentVoucher.getVoucherId()).isEqualTo(percentVoucher.getVoucherId());
 		assertThat(findPercentVoucher.getType()).isEqualTo(VoucherType.PERCENT_DISCOUNT_VOUCHER.name());

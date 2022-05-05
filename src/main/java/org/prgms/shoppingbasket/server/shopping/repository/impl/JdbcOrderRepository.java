@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.prgms.shoppingbasket.server.common.exception.DatabaseException;
 import org.prgms.shoppingbasket.server.common.utils.LocalDateTimeUtil;
 import org.prgms.shoppingbasket.server.common.utils.UUIDConverter;
 import org.prgms.shoppingbasket.server.shopping.entity.Order;
@@ -22,8 +21,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.google.common.base.Preconditions;
 
 import lombok.RequiredArgsConstructor;
 

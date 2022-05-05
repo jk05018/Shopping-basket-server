@@ -52,7 +52,7 @@ class ProductTest {
 		assertThrows(IllegalArgumentException.class, () -> Product.create("snack", 200, -10000000, "나는 과자다"));
 	}
 
-	@DisplayName("productName은 NULL이 아니어야 하고 1자이상 20자 미만이어야 한다..")
+	@DisplayName("productName은 NULL과 공백이 아니어야 하고 1자이상 20자 미만이어야 한다.")
 	@Test
 	void productName_description_length_test() {
 		assertThrows(IllegalArgumentException.class, () -> Product.create("", 10000, 20, "나는 과자다"));
@@ -60,6 +60,5 @@ class ProductTest {
 		assertThrows(IllegalArgumentException.class,
 			() -> Product.create("snackkkkkkkkkkkkkkkkkkkkkkkkkkㅣㅣㅣ", 10000, 20, "I'm snack"));
 	}
-
 
 }

@@ -19,7 +19,7 @@ class JdbcProductRepositoryTest {
 	@Autowired
 	ProductRepository productRepository;
 
-	@DisplayName("product save Test")
+	@DisplayName("product 생성 테스트")
 	@Test
 	void product_save_pass_test() {
 		// given
@@ -64,7 +64,7 @@ class JdbcProductRepositoryTest {
 		assertThat(products).contains(product1, product2);
 	}
 
-	@DisplayName("update test")
+	@DisplayName("product 재고 감소 test")
 	@Test
 	void update_test() {
 		// given

@@ -1,13 +1,15 @@
 package org.prgms.shoppingbasket.server.shopping.repository.impl;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.prgms.shoppingbasket.server.common.exception.DatabaseException;
 import org.prgms.shoppingbasket.server.common.utils.LocalDateTimeUtil;
 import org.prgms.shoppingbasket.server.common.utils.UUIDConverter;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
@@ -34,9 +36,7 @@ public class JdbcVoucherRepository implements VoucherRepository, JdbcRepository<
 				+ " values (:voucherId, :value, :type, :description, :createdAt, :updatedAt)";
 		final int update = jdbcTemplate.update(VOUCHER_SAVE_SQL, voucherToParamMap(voucher));
 
-		if (update != 1) {
-			throw new DatabaseException("product가 save되지 않았습니다.");
-		}
+		checkState(update == 1, "voucher가 save되지 않았습니다. voucherId = " + voucher.getVoucherId());
 
 		return voucher;
 	}
@@ -68,14 +68,15 @@ public class JdbcVoucherRepository implements VoucherRepository, JdbcRepository<
 	}
 
 	private Map<String, Object> voucherToParamMap(Voucher voucher) {
-		return Map.of(
-			"voucherId", UUIDConverter.uuidToBytes(voucher.getVoucherId())
-			, "value", voucher.getValue()
-			, "type", voucher.getType()
-			, "description", voucher.getDescription()
-			, "createdAt", voucher.getCreatedAt()
-			, "updatedAt", voucher.getUpdatedAt()
-		);
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("voucherId", UUIDConverter.uuidToBytes(voucher.getVoucherId()));
+		paramMap.put("value", voucher.getValue());
+		paramMap.put("type", voucher.getType());
+		paramMap.put("description", voucher.getDescription());
+		paramMap.put("createdAt", voucher.getCreatedAt());
+		paramMap.put("updatedAt", voucher.getUpdatedAt());
+
+		return paramMap;
 
 	}
 

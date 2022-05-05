@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class OrderTest {
 
-	@DisplayName("createOrder, orderItem test")
+	@DisplayName("Order 생성 테스트")
 	@Test
 	void create_order_test() {
 		// given
@@ -34,17 +34,6 @@ class OrderTest {
 		//then
 		assertThat(orderItem.getProductId()).isEqualTo(product.getId());
 		assertThat(orderItem.getQuantity()).isEqualTo(10);
-	}
-
-	@DisplayName("나중에 서비스에서 할때 OrderItem의 주문량이 product의 remain보다 작을 때 예외를 내도록 처리하자 Controller 단에서 처리할 수 있음 더 좋고")
-	@Test
-	void test() {
-		// given
-
-		//when
-
-		//then
-
 	}
 
 }

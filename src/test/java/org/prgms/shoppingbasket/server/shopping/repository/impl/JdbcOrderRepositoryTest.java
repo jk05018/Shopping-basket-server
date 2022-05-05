@@ -36,7 +36,7 @@ class JdbcOrderRepositoryTest {
 	@Autowired
 	OrderItemRepository orderItemRepository;
 
-	@DisplayName("product save Test")
+	@DisplayName("product 생성 테스트, update 테스트 ")
 	@Test
 	void product_save_pass_test() {
 		// given
@@ -78,9 +78,9 @@ class JdbcOrderRepositoryTest {
 		assertThat(findUpdatedOrder.get().getPostcode()).isEqualTo("1324");
 	}
 
-	@DisplayName("product save Test without voucher")
+	@DisplayName("바우처 등록하지 않는 Order 생성 테스트")
 	@Test
-	void product_save_pass_test_without_voucher() {
+	void order_save_pass_test_without_voucher() {
 		// given
 		final Product product1 = productRepository.save(Product.create("product1", 10000, 20, "product1 입니다!"));
 		final Product product2 = productRepository.save(Product.create("product2", 20000, 10, "product2 입니다!"));

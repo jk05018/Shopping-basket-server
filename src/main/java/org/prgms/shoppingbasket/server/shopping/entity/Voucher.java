@@ -59,4 +59,15 @@ public class Voucher {
 		return new Voucher(voucherId, value, type, description, createdAt, updatedAt);
 	}
 
+	@Override
+	public String toString() {
+		return "Voucher{" +
+			"voucherId=" + voucherId +
+			", value=" + value +
+			", type='" + type + '\'' +
+			", description='" + description + '\'' +
+			", createdAt=" + createdAt +
+			", updatedAt=" + updatedAt +
+			'}';
+	}
 }

@@ -3,11 +3,9 @@ package org.prgms.shoppingbasket.server.shopping.service.impl;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgms.shoppingbasket.server.shopping.entity.Order;
