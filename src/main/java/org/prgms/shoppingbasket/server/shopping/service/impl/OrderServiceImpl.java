@@ -64,4 +64,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderRepository.update(toUpdateOrder);
 	}
 
+	@Override
+	public void deleteOrder(UUID orderId) {
+		orderRepository.deleteOrder(orderId);
+	}
+
 }

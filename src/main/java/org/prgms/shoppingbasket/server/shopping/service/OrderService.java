@@ -13,4 +13,6 @@ public interface OrderService {
 	List<Order> getAllOrders();
 
 	Order updateDeliveryDestination(UUID orderId, String email, String address, String postcode);
+
+	void deleteOrder(UUID orderId);
 }

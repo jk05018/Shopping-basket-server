@@ -12,6 +12,7 @@ import org.prgms.shoppingbasket.server.shopping.entity.Order;
 import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
 import org.prgms.shoppingbasket.server.shopping.entity.Product;
 import org.prgms.shoppingbasket.server.shopping.entity.Voucher;
+import org.prgms.shoppingbasket.server.shopping.repository.OrderItemRepository;
 import org.prgms.shoppingbasket.server.shopping.repository.OrderRepository;
 import org.prgms.shoppingbasket.server.shopping.repository.ProductRepository;
 import org.prgms.shoppingbasket.server.shopping.service.OrderService;
@@ -35,6 +36,8 @@ class OrderServiceImplTest {
 	VoucherService voucherService;
 	@Autowired
 	OrderRepository orderRepository;
+	@Autowired
+	OrderItemRepository orderItemRepository;
 
 	@DisplayName("Voucher를 적용한 Order는 생성할 수 있어야 한다")
 	@Test
@@ -86,8 +89,8 @@ class OrderServiceImplTest {
 		assertThat(findOrder).isNotNull();
 		assertThat(findOrder.get().getVoucherId()).isNull();
 		assertThat(findOrder.get().getEmail()).isEqualTo("han@email.com");
-		assertThat(findOrder.get().getOrderItems()).map(i -> i.getProductId())
-			.contains(product1.getId(), product2.getId());
+		assertThat(findOrder.get().getOrderItems()).extracting("productId")
+			.containsExactlyInAnyOrder(product1.getId(), product2.getId());
 
 	}
 
@@ -145,6 +148,34 @@ class OrderServiceImplTest {
 		assertThat(updatedOrder.getAddress()).isEqualTo("updateGangnam");
 		assertThat(updatedOrder.getPostcode()).isEqualTo("54321");
 
+	}
+
+	@DisplayName("deleteOrder 테스트, Order를 삭제 할 때 하위의 OrderItems까지 삭제 되어야 한다.")
+	@Test
+	void test() {
+		// given
+		final Product product1 = productService.createProduct("product1", 10000, 20, "product1");
+		final Product product2 = productService.createProduct("product2", 20000, 30, "product2");
+
+		List<OrderItem> orderItems = new ArrayList<>();
+		orderItems.add(OrderItem.create(product1.getId(), product1.getPrice(), 10));
+		orderItems.add(OrderItem.create(product2.getId(), product2.getPrice(), 10));
+
+		final Order savedOrder = orderService.createOrder(null, "han@email.com", "gangnam", "12345",
+			orderItems);
+
+		// when
+		orderService.deleteOrder(savedOrder.getOrderId());
+
+		// then
+		final Optional<Order> findOrder = orderRepository.findById(savedOrder.getOrderId());
+
+		assertThat(findOrder).isEmpty();
+
+		final List<OrderItem> orderItemsByOrderId = orderItemRepository.findOrderItemsByOrderId(
+			savedOrder.getOrderId());
+
+		assertThat(orderItemsByOrderId.size()).isEqualTo(0);
 	}
 
 }

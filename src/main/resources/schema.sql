@@ -43,4 +43,12 @@ create table order_items
     CONSTRAINT fk_order_items_to_product FOREIGN KEY (product_id) REFERENCES products (product_id)
 );
 
+insert into products values(UUID_TO_BIN(UUID()), '허쉬 춰퀄릿',2000,30,'초콜릿',now(), now());
+insert into products values(UUID_TO_BIN(UUID()), '페렐레 로쉐에',3000,20,'초콜릿',now(), now());
+insert into products values(UUID_TO_BIN(UUID()), '가놔 쵸퀄렛',1000,30,'초콜릿',now(), now());
+
+insert into  vouchers values(UUID_TO_BIN(UUID()), 10000,'FIXED_AMOUNT_VOUCHER','10000원 할인',now(), now());
+insert into  vouchers values(UUID_TO_BIN(UUID()), 20000, 'FIXED_AMOUNT_VOUCHER','20000원 할인',now(), now());
+insert into  vouchers values(UUID_TO_BIN(UUID()), 30,'PERCENT_DISCOUNT_VOUCHER','30% 할인',now(), now());
+
 

@@ -103,4 +103,5 @@ class JdbcOrderRepositoryTest {
 		assertThat(findOrder.get().getOrderItems().size()).isEqualTo(2);
 
 	}
+
 }

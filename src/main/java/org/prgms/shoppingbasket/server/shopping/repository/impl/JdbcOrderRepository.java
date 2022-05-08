@@ -77,10 +77,10 @@ public class JdbcOrderRepository implements OrderRepository, JdbcRepository<Orde
 	}
 
 	@Override
-	public void deleteAll() {
-		final String DELETE_SQL = "delete from orders";
+	public void deleteOrder(UUID orderId) {
+		final String DELETE_SQL = "delete from orders where order_id = :orderId";
 
-		jdbcTemplate.update(DELETE_SQL, Collections.emptyMap());
+		jdbcTemplate.update(DELETE_SQL, Map.of("orderId", UUIDConverter.uuidToBytes(orderId)));
 
 	}
 
@@ -96,16 +96,6 @@ public class JdbcOrderRepository implements OrderRepository, JdbcRepository<Orde
 
 		return paramMap;
 	}
-
-	// return Map.of(
-	// 	"orderId", UUIDConverter.uuidToBytes(order.getOrderId()),
-	// 	"voucherId", UUIDConverter.uuidToBytes(order.getVoucherId()),
-	// 	"email", order.getEmail(),
-	// 	"address", order.getAddress(),
-	// 	"postcode", order.getPostcode(),
-	// 	"createdAt", order.getCreatedAt(),
-	// 	"updatedAt", order.getUpdatedAt()
-	// 	);
 
 	@Override
 	public RowMapper<Order> toMapper() {
