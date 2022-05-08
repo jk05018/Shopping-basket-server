@@ -3,20 +3,23 @@ package org.prgms.shoppingbasket.server.shopping.dto;
 import java.util.List;
 import java.util.UUID;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import org.prgms.shoppingbasket.server.common.validation.email.EmailConstraint;
 import org.prgms.shoppingbasket.server.shopping.entity.OrderItem;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Builder
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderCreateDto {
 
 	private List<UUID> voucherId;

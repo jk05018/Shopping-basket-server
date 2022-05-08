@@ -152,7 +152,7 @@ class OrderServiceImplTest {
 
 	@DisplayName("deleteOrder 테스트, Order를 삭제 할 때 하위의 OrderItems까지 삭제 되어야 한다.")
 	@Test
-	void test() {
+	void delete_order_test() {
 		// given
 		final Product product1 = productService.createProduct("product1", 10000, 20, "product1");
 		final Product product2 = productService.createProduct("product2", 20000, 30, "product2");

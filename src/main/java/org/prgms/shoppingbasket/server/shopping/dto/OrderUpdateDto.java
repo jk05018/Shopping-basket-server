@@ -1,17 +1,20 @@
 package org.prgms.shoppingbasket.server.shopping.dto;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.prgms.shoppingbasket.server.common.validation.email.EmailConstraint;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Builder
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderUpdateDto {
 
 	@EmailConstraint
