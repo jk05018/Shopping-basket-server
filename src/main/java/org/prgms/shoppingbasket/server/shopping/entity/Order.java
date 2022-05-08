@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.prgms.shoppingbasket.server.common.validation.email.EmailConstraintValidator;
+
 import lombok.Getter;
 
 @Getter
@@ -44,13 +46,9 @@ public class Order {
 	}
 
 	private void validateFields(String email, String address, String postcode) {
-		checkArgument(checkEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
+		checkArgument(EmailConstraintValidator.validateEmail(email), "email은 형식에 맞춰서 기입해야 합니다.");
 		checkNotNull(address, "address 는 공백이면 안됩니다");
 		checkNotNull(postcode, "postcode 는 공백이면 안됩니다");
-	}
-
-	private boolean checkEmail(String email) {
-		return Pattern.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b", email);
 	}
 
 	public static Order create(UUID voucherId, String email, String address, String postcode,

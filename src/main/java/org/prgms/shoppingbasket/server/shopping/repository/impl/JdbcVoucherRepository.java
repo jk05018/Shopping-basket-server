@@ -68,16 +68,14 @@ public class JdbcVoucherRepository implements VoucherRepository, JdbcRepository<
 	}
 
 	private Map<String, Object> voucherToParamMap(Voucher voucher) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("voucherId", UUIDConverter.uuidToBytes(voucher.getVoucherId()));
-		paramMap.put("value", voucher.getValue());
-		paramMap.put("type", voucher.getType());
-		paramMap.put("description", voucher.getDescription());
-		paramMap.put("createdAt", voucher.getCreatedAt());
-		paramMap.put("updatedAt", voucher.getUpdatedAt());
-
-		return paramMap;
-
+		return Map.of(
+		"voucherId", UUIDConverter.uuidToBytes(voucher.getVoucherId()),
+		"value", voucher.getValue(),
+		"type", voucher.getType(),
+		"description", voucher.getDescription(),
+		"createdAt", voucher.getCreatedAt(),
+		"updatedAt", voucher.getUpdatedAt()
+		);
 	}
 
 	public RowMapper<Voucher> toMapper() {
