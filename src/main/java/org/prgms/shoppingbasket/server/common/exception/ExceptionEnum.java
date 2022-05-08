@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum ExceptionEnum {
-	BINDING_EXCEPTION(HttpStatus.BAD_REQUEST,"E0000"),
+	BINDING_EXCEPTION(HttpStatus.BAD_REQUEST, "E0000"),
 	RUNTIME_EXCEPTION(HttpStatus.BAD_REQUEST, "E0001"),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E0003");
 
@@ -22,7 +22,7 @@ public enum ExceptionEnum {
 		this.code = code;
 	}
 
-	public ExceptionEnum withMessage(String message){
+	public ExceptionEnum withMessage(String message) {
 		this.message = message;
 		return this;
 	}

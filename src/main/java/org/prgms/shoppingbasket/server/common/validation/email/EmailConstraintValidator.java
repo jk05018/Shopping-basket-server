@@ -13,7 +13,7 @@ public class EmailConstraintValidator implements ConstraintValidator<EmailConstr
 		return s != null && Pattern.matches(EMAIL_REGREX, s);
 	}
 
-	public static boolean validateEmail(String email){
+	public static boolean validateEmail(String email) {
 		return Pattern.matches(EMAIL_REGREX, email);
 	}
 }

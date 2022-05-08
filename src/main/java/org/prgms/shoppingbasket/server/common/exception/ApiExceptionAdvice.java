@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/** 공통 예외 처리 부분 **/
 @RestControllerAdvice
 public class ApiExceptionAdvice {
 

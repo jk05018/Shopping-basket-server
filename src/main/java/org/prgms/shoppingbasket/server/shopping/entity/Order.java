@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import org.prgms.shoppingbasket.server.common.validation.email.EmailConstraintValidator;
 
