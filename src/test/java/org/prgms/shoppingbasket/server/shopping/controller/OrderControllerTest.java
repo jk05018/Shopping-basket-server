@@ -51,6 +51,9 @@ class OrderControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(objectMapper.writeValueAsString(createDto)))
 			.andExpect(status().isCreated());
+
+		// mock진행한 뒤 반환된 응답 내부를 test하는 로직도 필요함
+		// OrderRepository도 불러와서 잘 들어갔는지도 확인해보자
 	}
 
 	@DisplayName("createOrder 실패 테스트")

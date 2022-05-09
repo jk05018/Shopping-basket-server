@@ -15,6 +15,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
+// DTO에서는 RequestDto와 REsponse DTO 둘 다 만들어라
+// DTO를 만들떄는 최소한으로 만ㄷ르어 @Getter이랑 @NoArgsConstructor
+// 내부에 static class를 선언해서 관리해보자 requdstdto, responsedto
 @Builder
 @Getter
 @ToString

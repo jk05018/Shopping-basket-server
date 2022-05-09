@@ -35,8 +35,12 @@ public class OrderController {
 
 	private final OrderService orderService;
 
+	// ResponseEntity로 반환하는 것도 충분히 납득할 만하다.
+	// 그런데 프론트엔드와 잘 협의가 된다면 굳이 응답코드를 나누어서 하지 않아도 된다.
+	// 엥간한 Opensource API가 아닌 이상 이렇게 빡세게 할 필요 엾다.
 	@GetMapping
 	public ResponseEntity<List<Order>> getOrderList() {
+		// ResponseDto로 반환해 주자
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(orderService.getAllOrders());
@@ -46,10 +50,15 @@ public class OrderController {
 	public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderCreateDto orderRequest,
 		BindingResult bindingResult) {
 
+		// bindingResult를 굳이 안해줘도 된다?
+		// 한번 자세히 알아보자 dto에서 validation을 적용했는데 서버 사이트 렌더링 개발에서는 잡아서 해줬음
+		// 근데 API에서는 잡아 줄 필요 없다?
+		// 멘토님이 현업에서 DTO에 Validation을 적용할 수도 있고 안할수도 있다고 했다. 잘 사용하지 않으시니 불필요한 코드라고 생각하시지 않았을까
 		if (bindingResult.hasErrors()) {
 			throw new ApiException(ExceptionEnum.BINDING_EXCEPTION.withMessage(errorToMessage(bindingResult)));
 		}
 
+		// 비즈니스 로직
 		Order order = orderService.createOrder(orderRequest.getVoucherId().get(0), orderRequest.getEmail(),
 			orderRequest.getAddress(), orderRequest.getPostcode(), orderRequest.getOrderItems());
 
