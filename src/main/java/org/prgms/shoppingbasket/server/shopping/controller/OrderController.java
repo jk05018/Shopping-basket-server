@@ -1,16 +1,16 @@
 package org.prgms.shoppingbasket.server.shopping.controller;
 
+import static org.prgms.shoppingbasket.server.shopping.dto.OrderDto.*;
+
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.prgms.shoppingbasket.server.common.exception.ApiException;
 import org.prgms.shoppingbasket.server.common.exception.ExceptionEnum;
-import org.prgms.shoppingbasket.server.shopping.dto.OrderCreateDto;
-import org.prgms.shoppingbasket.server.shopping.dto.OrderUpdateDto;
-import org.prgms.shoppingbasket.server.shopping.entity.Order;
 import org.prgms.shoppingbasket.server.shopping.service.OrderService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -39,15 +39,19 @@ public class OrderController {
 	// 그런데 프론트엔드와 잘 협의가 된다면 굳이 응답코드를 나누어서 하지 않아도 된다.
 	// 엥간한 Opensource API가 아닌 이상 이렇게 빡세게 할 필요 엾다.
 	@GetMapping
-	public ResponseEntity<List<Order>> getOrderList() {
+	public ResponseEntity<List<OrderResponseDto>> getOrderList() {
+		final List<OrderResponseDto> orderList = orderService.getAllOrders().stream().map(o -> OrderResponseDto.of(o))
+			.collect(Collectors.toList());
+
 		// ResponseDto로 반환해 주자
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(orderService.getAllOrders());
+			.body(orderList);
 	}
 
 	@PostMapping
-	public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderCreateDto orderRequest,
+	public ResponseEntity<OrderResponseDto> createOrder(
+		@Valid @RequestBody CreateRequestDto orderRequest,
 		BindingResult bindingResult) {
 
 		// bindingResult를 굳이 안해줘도 된다?
@@ -59,28 +63,31 @@ public class OrderController {
 		}
 
 		// 비즈니스 로직
-		Order order = orderService.createOrder(orderRequest.getVoucherId().get(0), orderRequest.getEmail(),
-			orderRequest.getAddress(), orderRequest.getPostcode(), orderRequest.getOrderItems());
+		final OrderResponseDto orderResponseDto = OrderResponseDto.of(
+			orderService.createOrder(orderRequest.getVoucherId().get(0), orderRequest.getEmail(),
+				orderRequest.getAddress(), orderRequest.getPostcode(), orderRequest.getOrderItems()));
 
 		return ResponseEntity
 			.status(HttpStatus.CREATED)
-			.body(order);
+			.body(orderResponseDto);
 	}
 
 	@PostMapping("/{orderId}")
-	public ResponseEntity<Order> updateDeleveryDestination(@PathVariable UUID orderId,
-		@Valid @RequestBody OrderUpdateDto orderUpdateDto, BindingResult bindingResult, HttpServletResponse response) {
+	public ResponseEntity<OrderResponseDto> updateDeleveryDestination(@PathVariable UUID orderId,
+		@Valid @RequestBody UpdateRequestDto orderUpdateDto, BindingResult bindingResult,
+		HttpServletResponse response) {
 
 		if (bindingResult.hasErrors()) {
 			throw new ApiException(ExceptionEnum.BINDING_EXCEPTION.withMessage(errorToMessage(bindingResult)));
 		}
 
-		final Order order = orderService.updateDeliveryDestination(orderId, orderUpdateDto.getEmail(),
-			orderUpdateDto.getAddress(), orderUpdateDto.getPostcode());
+		final OrderResponseDto orderResponseDto = OrderResponseDto.of(
+			orderService.updateDeliveryDestination(orderId, orderUpdateDto.getEmail(),
+				orderUpdateDto.getAddress(), orderUpdateDto.getPostcode()));
 
 		return ResponseEntity
 			.status(HttpStatus.ACCEPTED)
-			.body(order);
+			.body(orderResponseDto);
 	}
 
 	@DeleteMapping("/{orderId}")
